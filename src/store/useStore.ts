@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import toast from "react-hot-toast";
 import { sendLocalNotification } from "../utils/notifications";
-import { signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { signInWithEmailAndPassword, signOut, onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase";
 
 export type AppUser = {
@@ -43,30 +43,15 @@ type StoreState = {
   authLoading: boolean;
   patients: Patient[];
   notifications: AppNotification[];
+
   login: (email: string, password: string) => Promise<AppUser>;
   logout: () => Promise<void>;
   setUser: (user: AppUser | null) => void;
-  setAuthLoading: (loading: boolean) => void;
+  initAuthListener: () => void;
+
   addPatient: (patient: Patient) => void;
   markNotificationsRead: () => void;
 };
-
-// const demoUsers = [
-//   {
-//     id: "u-admin",
-//     name: "Dr. Admin",
-//     email: "admin@healthcarepro.com",
-//     password: "Admin@123456",
-//     role: "Hospital Admin",
-//   },
-//   {
-//     id: "u-staff",
-//     name: "Care Coordinator",
-//     email: "staff@healthcarepro.com",
-//     password: "Care@123456",
-//     role: "Clinical Staff",
-//   },
-// ];
 
 const initialPatients: Patient[] = [
   {
@@ -83,7 +68,7 @@ const initialPatients: Patient[] = [
     phone: "+91 98765 12001",
     lastVisit: "Today, 10:30 AM",
     riskScore: 72,
-    notes: "Monitor blood pressure every 4 hours and review ECG before discharge.",
+    notes: "Monitor BP every 4 hours and review ECG before discharge.",
   },
   {
     id: 1002,
@@ -99,7 +84,7 @@ const initialPatients: Patient[] = [
     phone: "+91 98765 12002",
     lastVisit: "Today, 11:15 AM",
     riskScore: 31,
-    notes: "HbA1c improved. Continue medication and schedule dietician review.",
+    notes: "Continue medication and diet plan.",
   },
   {
     id: 1003,
@@ -115,7 +100,7 @@ const initialPatients: Patient[] = [
     phone: "+91 98765 12003",
     lastVisit: "Yesterday, 04:00 PM",
     riskScore: 58,
-    notes: "Physiotherapy twice daily. Speech therapy progress is steady.",
+    notes: "Physiotherapy twice daily.",
   },
   {
     id: 1004,
@@ -131,93 +116,159 @@ const initialPatients: Patient[] = [
     phone: "+91 98765 12004",
     lastVisit: "Today, 09:10 AM",
     riskScore: 89,
-    notes: "Oxygen support active. Review blood culture results urgently.",
+    notes: "Oxygen support active.",
+  },
+  {
+    id: 1005,
+    name: "Rohan Gupta",
+    age: 52,
+    gender: "Male",
+    condition: "Hypertension",
+    department: "Cardiology",
+    doctor: "Dr. Nisha Rao",
+    status: "Stable",
+    admissionDate: "2026-04-20",
+    room: "C-102",
+    phone: "+91 98765 12005",
+    lastVisit: "Today, 01:30 PM",
+    riskScore: 44,
+    notes: "Regular BP monitoring required.",
+  },
+  {
+    id: 1006,
+    name: "Priya Singh",
+    age: 41,
+    gender: "Female",
+    condition: "Thyroid disorder",
+    department: "Endocrinology",
+    doctor: "Dr. Kabir Sethi",
+    status: "Observation",
+    admissionDate: "2026-04-21",
+    room: "OPD-05",
+    phone: "+91 98765 12006",
+    lastVisit: "Today, 12:00 PM",
+    riskScore: 39,
+    notes: "Follow-up in 2 weeks.",
+  },
+  {
+    id: 1007,
+    name: "Ankit Verma",
+    age: 34,
+    gender: "Male",
+    condition: "Fracture recovery",
+    department: "Orthopedics",
+    doctor: "Dr. Rahul Jain",
+    status: "Recovering",
+    admissionDate: "2026-04-15",
+    room: "O-210",
+    phone: "+91 98765 12007",
+    lastVisit: "Yesterday, 06:00 PM",
+    riskScore: 27,
+    notes: "Physiotherapy ongoing.",
+  },
+  {
+    id: 1008,
+    name: "Sneha Iyer",
+    age: 55,
+    gender: "Female",
+    condition: "Heart surgery recovery",
+    department: "Cardiology",
+    doctor: "Dr. Nisha Rao",
+    status: "Critical",
+    admissionDate: "2026-04-27",
+    room: "ICU-07",
+    phone: "+91 98765 12008",
+    lastVisit: "Today, 08:30 AM",
+    riskScore: 91,
+    notes: "Post-surgery monitoring required.",
   },
 ];
 
-const getStoredUser = () => {
-  try {
-    return JSON.parse(localStorage.getItem("healthcare-user") || "null") as AppUser | null;
-  } catch {
-    return null;
-  }
-};
-
 export const useStore = create<StoreState>((set, get) => ({
-  user: getStoredUser(),
-  authLoading: false,
+  user: null,
+  authLoading: true,
   patients: initialPatients,
-  notifications: [
-    {
-      id: 1,
-      title: "ICU review due",
-      message: "Isha Kapoor needs a respiratory review today.",
-      createdAt: "09:00 AM",
-      read: false,
-    },
-  ],
+  notifications: [],
 
+  // 🔥 INIT AUTH (AUTO LOGIN AFTER REFRESH)
+  initAuthListener: () => {
+    if (!auth) return;
+
+    onAuthStateChanged(auth, (firebaseUser) => {
+      if (firebaseUser) {
+        const user: AppUser = {
+          id: firebaseUser.uid,
+          name: firebaseUser.displayName || firebaseUser.email || "User",
+          email: firebaseUser.email || "",
+          role: "Hospital Staff",
+        };
+
+        localStorage.setItem("healthcare-user", JSON.stringify(user));
+        set({ user, authLoading: false });
+      } else {
+        localStorage.removeItem("healthcare-user");
+        set({ user: null, authLoading: false });
+      }
+    });
+  },
+
+  // 🔐 LOGIN
   login: async (email, password) => {
-  if (!auth) throw new Error("Firebase not configured");
+    if (!auth) throw new Error("Firebase not configured");
 
-  if (!email || !password) {
-    throw new Error("Email and password are required");
-  }
-
-  set({ authLoading: true });
-
-  try {
-    const res = await signInWithEmailAndPassword(auth, email, password);
-
-    const appUser = {
-      id: res.user.uid,
-      name: res.user.displayName || res.user.email || "User",
-      email: res.user.email || "",
-      role: "Hospital Staff",
-    };
-
-    // ✅ session persistence
-    localStorage.setItem("healthcare-user", JSON.stringify(appUser));
-
-    set({ user: appUser });
-
-    return appUser;
-
-  } catch (error: any) {
-    // 🔥 better Firebase error messages
-    if (error.code === "auth/user-not-found") {
-      throw new Error("User not found");
-    }
-    if (error.code === "auth/wrong-password") {
-      throw new Error("Incorrect password");
-    }
-    if (error.code === "auth/invalid-email") {
-      throw new Error("Invalid email format");
+    if (!email || !password) {
+      throw new Error("Email and password are required");
     }
 
-    throw new Error("Login failed. Please try again.");
-  } finally {
-    set({ authLoading: false });
-  }
-},
+    set({ authLoading: true });
 
+    try {
+      const res = await signInWithEmailAndPassword(auth, email, password);
+
+      const user: AppUser = {
+        id: res.user.uid,
+        name: res.user.displayName || res.user.email || "User",
+        email: res.user.email || "",
+        role: "Hospital Staff",
+      };
+
+      localStorage.setItem("healthcare-user", JSON.stringify(user));
+      set({ user });
+
+      return user;
+
+    } catch (error: any) {
+      const code = error.code;
+
+      if (code === "auth/user-not-found") throw new Error("User not found");
+      if (code === "auth/wrong-password") throw new Error("Incorrect password");
+      if (code === "auth/invalid-email") throw new Error("Invalid email");
+      if (code === "auth/too-many-requests") throw new Error("Too many attempts. Try later");
+
+      throw new Error("Login failed. Please try again.");
+
+    } finally {
+      set({ authLoading: false });
+    }
+  },
+
+  // 🔓 LOGOUT
   logout: async () => {
-  if (auth) await signOut(auth);
-  localStorage.removeItem("healthcare-user");
-  set({ user: null });
-},
+    if (auth) await signOut(auth);
+    localStorage.removeItem("healthcare-user");
+    set({ user: null });
+  },
 
   setUser: (user) => set({ user }),
 
-  setAuthLoading: (authLoading) => set({ authLoading }),
-
+  // ➕ ADD PATIENT
   addPatient: (patient) =>
     set((state) => {
-      const notification = {
+      const notification: AppNotification = {
         id: Date.now(),
         title: "New patient added",
-        message: `${patient.name} was added to ${patient.department}.`,
-        createdAt: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+        message: `${patient.name} added to ${patient.department}`,
+        createdAt: new Date().toLocaleTimeString(),
         read: false,
       };
 
@@ -230,10 +281,11 @@ export const useStore = create<StoreState>((set, get) => ({
       };
     }),
 
+  // 🔔 MARK READ
   markNotificationsRead: () =>
     set({
-      notifications: get().notifications.map((notification) => ({
-        ...notification,
+      notifications: get().notifications.map((n) => ({
+        ...n,
         read: true,
       })),
     }),
