@@ -13,7 +13,7 @@ A modern **Healthcare SaaS Dashboard** built using **React + TypeScript + Fireba
 ## 🚀 Live Demo
 
 🌐 Primary (Recommended – Vercel):
-https://healthcare-efgxvb8m1-deepak2488s-projects.vercel.app
+https://healthcare-pro-kappa.vercel.app
 
 🌐 Backup (Netlify):
 https://healthcare-firebase-auth-pro-saas.netlify.app
