@@ -3,7 +3,7 @@
 ![React](https://img.shields.io/badge/React-19.2.5-blue)
 ![TypeScript](https://img.shields.io/badge/TypeScript-~6.0.2-blue)
 ![Firebase](https://img.shields.io/badge/Firebase-Auth-orange)
-![Netlify](https://img.shields.io/badge/Deployed-Netlify-green)
+![Netlify](https://img.shields.io/badge/Deployed-Vercel-green)
 ![License](https://img.shields.io/badge/License-MIT-lightgrey)
 
 A modern **Healthcare SaaS Dashboard** built using **React + TypeScript + Firebase**, simulating real-world hospital workflows like authentication, analytics, and patient management.
