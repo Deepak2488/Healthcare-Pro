@@ -1,18 +1,45 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-# React + TypeScript + Vite
-=======
 # 🏥 Healthcare Pro – B2B Healthcare SaaS UI
->>>>>>> 4280b421fffbeed8dfff274197d7f69baccfce6b
 
-A modern **Healthcare SaaS Dashboard** built using **React + TypeScript + Firebase**, designed to simulate real-world hospital operations including authentication, analytics, and patient management.
+![React](https://img.shields.io/badge/React-19.2.5-blue)
+![TypeScript](https://img.shields.io/badge/TypeScript-~6.0.2-blue)
+![Firebase](https://img.shields.io/badge/Firebase-Auth-orange)
+![Netlify](https://img.shields.io/badge/Deployed-Netlify-green)
+![License](https://img.shields.io/badge/License-MIT-lightgrey)
+
+A modern **Healthcare SaaS Dashboard** built using **React + TypeScript + Firebase**, simulating real-world hospital workflows like authentication, analytics, and patient management.
 
 ---
 
 ## 🚀 Live Demo
 
-🔗 **Live App:** https://healthcare-firebase-auth-pro-saas.netlify.app/login
-🔗 **GitHub Repo:** https://github.com/Deepak2488/Healthcare-Pro
+🌐 Primary (Recommended – Vercel):
+https://healthcare-efgxvb8m1-deepak2488s-projects.vercel.app
+
+🌐 Backup (Netlify):
+https://healthcare-firebase-auth-pro-saas.netlify.app
+
+🔗 GitHub Repository:
+https://github.com/Deepak2488/Healthcare-Pro
+
+---
+
+## 📸 Screenshots
+
+### 🔐 Login Page
+
+![Login](https://github.com/Deepak2488/Healthcare-Pro/blob/69d6eaec758986f3d286767201dfa05fb6c8e0d4/Screenshot%202026-05-04%20001026.png)
+
+### 📊 Dashboard
+
+![Dashboard](https://github.com/Deepak2488/Healthcare-Pro/blob/a42d13492e3530f68847d0ce2e639b9a3d3fb0fc/Screenshot%202026-05-04%20001112.png)
+
+### 👨‍⚕️ Patients Module
+
+![Patients](https://github.com/Deepak2488/Healthcare-Pro/blob/aa5a3d6c1f3137157d6fca7c03c7470492f3a677/Screenshot%202026-05-04%20001130.png)
+
+### 📈 Analytics Page
+
+![Analytics](https://github.com/Deepak2488/Healthcare-Pro/blob/94e19c4e3755d4825f300d92677f6d43be3086f4/Screenshot%202026-05-04%20001234.png)
 
 ---
 
@@ -28,13 +55,12 @@ A modern **Healthcare SaaS Dashboard** built using **React + TypeScript + Fireba
 
 ## 🎯 Project Objective
 
-This project was built as part of a **Frontend Developer Assignment** to demonstrate:
+Build a scalable **Healthcare SaaS UI platform** demonstrating:
 
-* Frontend architecture
-* Real-world UI/UX design
-* State management
-* Firebase integration
-* Scalable code structure
+* Real-world frontend architecture
+* Firebase authentication
+* Clean UI/UX design
+* Modular & scalable code
 
 ---
 
@@ -45,7 +71,7 @@ This project was built as part of a **Frontend Developer Assignment** to demonst
 * 🗂 Zustand (State Management)
 * 🔥 Firebase Authentication
 * 🎨 Tailwind CSS
-* 📊 Chart Libraries (Analytics)
+* 📊 Charts (Analytics)
 * 🔔 Service Worker (Notifications)
 
 ---
@@ -55,30 +81,29 @@ This project was built as part of a **Frontend Developer Assignment** to demonst
 ### 🔐 Authentication
 
 * Firebase Email/Password login
-* Validation & error handling
-* Session persistence (localStorage)
+* Form validation & error handling
+* Session persistence
 * Protected routes
 
 ---
 
 ### 📊 Dashboard
 
-* Hospital overview metrics
-* Cards + charts UI
-* Real-time styled analytics
+* Hospital KPI cards
+* Analytics overview
+* Modern SaaS UI
 
 ---
 
 ### 👨‍⚕️ Patient Management
 
-* Grid View / List View toggle
-* Patient cards with details
-* Search & filtering UI
-* Responsive layout
+* Grid / List toggle
+* Search & filters
+* Patient cards UI
 
 ---
 
-### 📈 Analytics Page
+### 📈 Analytics
 
 * Growth charts
 * Department distribution
@@ -88,21 +113,21 @@ This project was built as part of a **Frontend Developer Assignment** to demonst
 
 ### 🔔 Notifications
 
-* Service worker integration
-* Browser notifications (FCM ready)
+* Service Worker setup
+* Browser notifications
 
 ---
 
 ### 🧠 State Management
 
-* Centralized Zustand store
-* Global auth & data handling
+* Zustand global store
+* Clean data flow
 
 ---
 
 ## 🏗 Project Structure
 
-```
+```id="structure"
 src/
 ├── components/
 ├── pages/
@@ -116,35 +141,20 @@ src/
 
 ---
 
-## ⚡ Getting Started (Local Setup)
+## ⚡ Local Setup
 
-### 1️⃣ Clone Repo
-
-```bash
+```bash id="setup"
 git clone https://github.com/Deepak2488/Healthcare-Pro.git
 cd Healthcare-Pro
-```
-<<<<<<< HEAD
-=======
-# Healthcare-Pro
->>>>>>> 2fdb0224ca0c56370247ed7447ce9b3cf316f0a4
-=======
-
----
-
-### 2️⃣ Install Dependencies
-
-```bash
 npm install
+npm run dev
 ```
 
 ---
 
-### 3️⃣ Setup Environment Variables
+## 🔐 Environment Variables
 
-Create `.env` file:
-
-```env
+```env id="env"
 VITE_FIREBASE_API_KEY=AIzaSyA_vnvy6ebrOHVYZamF8nY6coJ-6z6aSFs
 VITE_FIREBASE_AUTH_DOMAIN=reactjsauth-df919.firebaseapp.com
 VITE_FIREBASE_PROJECT_ID=reactjsauth-df919
@@ -156,45 +166,25 @@ VITE_FIREBASE_MEASUREMENT_ID=G-1EBXG0T0HN
 
 ---
 
-### 4️⃣ Run Project
-
-```bash
-npm run dev
-```
-
----
-
 ## 🚀 Deployment
 
-Deployed using **Netlify**
+Hosted on **Netlify**
 
-### Build Settings:
-
+```id="deploy"
+Build: npm run build
+Publish: dist
 ```
-Build Command: npm run build
-Publish Directory: dist
-```
-
----
-
-## 📌 Key Highlights
-
-* 🔥 Production-ready UI (SaaS level design)
-* 📱 Fully responsive
-* 🔐 Secure authentication flow
-* ⚡ Optimized performance
-* 🧩 Modular & scalable architecture
 
 ---
 
 ## 📊 Evaluation Coverage
 
-| Requirement      | Status |
+| Feature          | Status |
 | ---------------- | ------ |
 | Authentication   | ✅      |
 | Dashboard        | ✅      |
 | Analytics        | ✅      |
-| Patient Module   | ✅      |
+| Patients Module  | ✅      |
 | Notifications    | ✅      |
 | State Management | ✅      |
 | UI/UX            | ✅      |
@@ -203,10 +193,10 @@ Publish Directory: dist
 
 ## 💡 Future Improvements
 
-* Google OAuth login
-* Role-based access control
+* Google Login
+* Role-based access
 * Backend API integration
-* Real-time patient updates
+* Real-time updates
 
 ---
 
@@ -217,9 +207,6 @@ Frontend Developer
 
 ---
 
-## ⭐ Feedback
+## ⭐ Support
 
-If you like this project, feel free to ⭐ the repo!
-
----
->>>>>>> 4280b421fffbeed8dfff274197d7f69baccfce6b
+If you like this project, give it a ⭐ on GitHub!
