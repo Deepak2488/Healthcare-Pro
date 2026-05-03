@@ -6,7 +6,7 @@ A modern **Healthcare SaaS Dashboard** built using **React + TypeScript + Fireba
 
 ## 🚀 Live Demo
 
-🔗 **Live App:** https://healthcare-firebase-auth-pro.netlify.app/login
+🔗 **Live App:** [https://healthcare-firebase-auth-pro.netlify.app/login](https://healthcare-firebase-auth-pro.netlify.app/login)
 🔗 **GitHub Repo:** https://github.com/Deepak2488/Healthcare-Pro
 
 ---
