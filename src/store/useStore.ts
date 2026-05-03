@@ -183,19 +183,23 @@ export const useStore = create<StoreState>((set, get) => ({
 
     return appUser;
 
-  } catch (error: any) {
-    // 🔥 better Firebase error messages
-    if (error.code === "auth/user-not-found") {
-      throw new Error("User not found");
+  } catch (error: unknown) {
+    const errorCode =
+      error && typeof error === "object" && "code" in error
+        ? String((error as { code: unknown }).code)
+        : "";
+
+    if (errorCode === "auth/user-not-found") {
+      throw new Error("User not found", { cause: error });
     }
-    if (error.code === "auth/wrong-password") {
-      throw new Error("Incorrect password");
+    if (errorCode === "auth/wrong-password") {
+      throw new Error("Incorrect password", { cause: error });
     }
-    if (error.code === "auth/invalid-email") {
-      throw new Error("Invalid email format");
+    if (errorCode === "auth/invalid-email") {
+      throw new Error("Invalid email format", { cause: error });
     }
 
-    throw new Error("Login failed. Please try again.");
+    throw new Error("Login failed. Please try again.", { cause: error });
   } finally {
     set({ authLoading: false });
   }
