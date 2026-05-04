@@ -202,8 +202,8 @@ Publish: dist
 
 ## 👨‍💻 Author
 
-**Deepak Singh**
-Frontend Developer
+**Deepak Kumar Singh**
+Frontend Engineer
 
 ---
 
